@@ -27,7 +27,7 @@ DeepEP), and torch ops with a non-deterministic accumulation (``scatter_add_``,
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Tuple
 
 # PR label that lets a kernel change merge without touching its determinism test
@@ -103,6 +103,24 @@ K = "tests/unit_tests/determinism/kernels/"
 C = "tests/unit_tests/determinism/correctness/"
 
 KERNELS: Tuple[KernelEntry, ...] = (
+    KernelEntry(
+        name="experimental_qsa_attention",
+        sources=(
+            "experimental/qsa_attention/qsa_kernels/__init__.py",
+            "experimental/qsa_attention/qsa_kernels/api.py",
+            "experimental/qsa_attention/qsa_kernels/forward_h100.py",
+            "experimental/qsa_attention/qsa_kernels/backward_h100.py",
+            "experimental/qsa_attention/qsa_kernels/forward_b200.py",
+            "experimental/qsa_attention/qsa_kernels/backward_b200.py",
+            "experimental/qsa_attention/qsa_kernels/metadata.py",
+            "experimental/qsa_attention/qsa_kernels/metadata.cu",
+        ),
+        tests=(K + "test_qsa_experimental.py",),
+        kind="cuda-ext",
+        training_path=False,
+        notes="Standalone CuTe DSL kernels. Forward is bit-exact; backward FP32 dK/dV "
+        "atomics have no deterministic branch (replay recorded with xfail(strict=False)).",
+    ),
     # ---------------------------------------------------------------- fused elementwise (jit_fuser / torch.compile)
     KernelEntry(
         name="fused_bias_swiglu",

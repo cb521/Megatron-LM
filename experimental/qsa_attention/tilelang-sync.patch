@@ -1,0 +1,8 @@
+--- a/megatron/core/transformer/experimental_attention_variant/ops/qsa_sparse_gqa_bwd.py
++++ b/megatron/core/transformer/experimental_attention_variant/ops/qsa_sparse_gqa_bwd.py
+@@ -322,0 +323,2 @@
++                        T.sync_threads()
++
+@@ -343,0 +346,2 @@
++
++                        T.sync_threads()

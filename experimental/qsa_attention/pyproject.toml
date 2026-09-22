@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qsa-kernels"
+version = "0.1.1"
+description = "Prepared BF16 sparse GQA kernels for H100 and B200"
+requires-python = ">=3.12"
+dependencies = [
+    "torch==2.11.0",
+    "nvidia-cutlass-dsl==4.5.2",
+    "quack-kernels==0.5.0",
+    "flash-attn-4==4.0.0b17",
+    "cuda-python==13.2.0",
+    "ninja>=1.11",
+]
+
+[tool.setuptools]
+packages = ["qsa_kernels"]
+
+[tool.setuptools.package-data]
+qsa_kernels = ["metadata.cu"]
+
+[tool.ruff]
+line-length = 100
